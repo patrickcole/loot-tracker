@@ -1,17 +1,29 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-// Configure a new application:
-const app = express();
-
+// If environment is development, configure environment variables:
 if ( (process.env.NODE_ENV || 'development' ) === 'development' ) {
   const dotenv = require('dotenv').config();
   console.log(`Server is reporting in development mode`);
 }
+
+// Configure a new application:
+const app = express();
+
+// Apply CORS so that only those whom have access can use app:
+app.use(cors());
+
+// Apply middleware for body params:
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+// Setup Mongoose:
 const DB_PATH = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
 
 // Establish the database connection:
-mongoose.connect(DB_PATH, { useNewUrlParser: true });
+mongoose.connect(DB_PATH, { useNewUrlParser: true, useCreateIndex: true });
 
 let db = mongoose.connection;
 db.once('open', () => console.log(`Connected to the database`));

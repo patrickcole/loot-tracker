@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 
 // Create router to handle requests:
 const router = express.Router();
@@ -15,6 +14,16 @@ router.get('/locations', (req, res) => {
   Location.find( (err, data ) => { 
     APIResponse(res, err, data, 'Locations not found');
   })
+});
+
+router.post('/locations', (req, res) => {
+
+  // TODO: Santize data:
+  let location = new Location(req.body);
+  location
+    .save()
+    .then( item => res.json({ success: true , data: { message: 'Location saved' }}) )
+    .catch( err => res.json({ success: false, data: { error: err }}) );
 });
 
 router.get('/location/:slug', (req, res) => {

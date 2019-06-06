@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 let itemSchema = new mongoose.Schema({
-  slug: String,
+  slug: {
+    type: String,
+    unique: true,
+    required: true,
+    dropDups: true
+  },
   title: String,
   type: {
     category: String,
