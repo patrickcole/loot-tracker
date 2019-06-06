@@ -1,8 +1,18 @@
 const express = require('express');
+const mongoose = require('mongoose');
+
+// Create router to handle requests:
 const router = express.Router();
 
+// Get Schemas:
+const Location = require('../schemas/Location');
+const Item = require('../schemas/Item');
+
 router.get('/locations', (req, res) => {
-  return res.json({ success: true, data: { message: "Locations Full List" } });
+  Location.find( (err, data ) => {
+    if ( err ) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
 });
 
 router.get('/location/:slug', (req, res) => {
@@ -10,7 +20,10 @@ router.get('/location/:slug', (req, res) => {
 })
 
 router.get('/items', (req, res) => {
-  return res.json({ success: true, data: { message: "Items Full List" } } );
+  Item.find( (err, data ) => {
+    if ( err ) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
 });
 
 router.get('/item/:slug', (req, res) => {
