@@ -8,26 +8,31 @@ const router = express.Router();
 const Location = require('../schemas/Location');
 const Item = require('../schemas/Item');
 
+// Utils:
+const APIResponse = require('./util/APIResponse');
+
 router.get('/locations', (req, res) => {
-  Location.find( (err, data ) => {
-    if ( err ) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
-  });
+  Location.find( (err, data ) => { 
+    APIResponse(res, err, data, 'Locations not found');
+  })
 });
 
 router.get('/location/:slug', (req, res) => {
-  return res.json({ success: true, data: { message: req.params.slug } } );
+  Location.findOne( { slug: req.params.slug }, ( err, data ) => {
+    APIResponse(res, err, data, 'Location not found');
+  });
 })
 
 router.get('/items', (req, res) => {
-  Item.find( (err, data ) => {
-    if ( err ) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
-  });
+  Item.find( (err, data) => {
+    APIResponse(res, err, data, 'Items not found');
+  })
 });
 
 router.get('/item/:slug', (req, res) => {
-  return res.json({ success: true, data: { message: req.params.slug } } );
+  Item.findOne( { slug: req.params.slug }, ( err, data ) => {
+    APIResponse(res, err, data, 'Item not found')
+  });
 })
 
 module.exports = router;
