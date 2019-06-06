@@ -1,0 +1,7 @@
+{
+  "name": "node-loot-tracker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Patrick Cole <hpcmobiledev@gmail.com>",
+  "license": "MIT"
+}
