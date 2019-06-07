@@ -44,4 +44,14 @@ router.get('/item/:slug', (req, res) => {
   });
 })
 
+router.post('/listing/:slug', (req, res) => {
+
+  let query = { slug: req.params.slug };
+  let update = { '$push': { 'locations': req.body } };
+
+  Item.findOneAndUpdate(query, update, ( err, data ) => {
+    APIResponse(res, err, data, 'Item not updated')
+  });
+})
+
 module.exports = router;

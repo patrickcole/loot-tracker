@@ -9,6 +9,12 @@ const getDataAsync = async function (url) {
   return data;
 }
 
+const sendDataAsync = async function (url, json) {
+  let response = await fetch(url, json);
+  let data = await response.json();
+  return data;
+}
+
 function ItemsList( { data } ) {
 
   return (
@@ -45,9 +51,44 @@ function Listings({ data }) {
   return (
     <ul>
     { data.map((listing) => {
-      return <li>{ listing.price } - <Link to={`/location/${listing.slug}`}>{ listing.slug }</Link> at { listing.date }</li>
+      return <li>{ listing.price.$numberDecimal } - <Link to={`/location/${listing.slug}`}>{ listing.slug }</Link> at { listing.date }</li>
     })}
     </ul>
+  )
+}
+
+function ListingAdd( { update, slug } ) {
+
+  const [listing, setListing] = useState({ slug: "Location", price: "0.00" });
+
+  let onPriceUpdate = e => setListing({...listing, price: e.currentTarget.value});
+  let onSlugUpdate = e => setListing({...listing, slug: e.currentTarget.value });
+
+  let handleAddListing = (e) => {
+
+    let request = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ slug: listing.slug, price: listing.price })
+    };
+
+    sendDataAsync(`/api/listing/${slug}`, request)
+      .then( (response) => {
+        if ( response.success ){
+          update(true);
+        }
+      });
+  };
+
+  return (
+    <aside>
+      <input type="text" placeholder="price" onChange={onPriceUpdate} value={listing.price} />
+      <input type="text" placeholder="location" onChange={onSlugUpdate} value={listing.slug} />
+      <button onClick={handleAddListing}>Add Listing</button>
+    </aside>
   )
 }
 
@@ -56,15 +97,19 @@ function Item({ location }) {
   let default_item = { title: "", type: { category: "", system: "" }, locations: [] }
 
   let [item, setItem] = useState(default_item);
+  let [update, setUpdate] = useState(true);
 
   useEffect(
     () => {
-      let slug = location.pathname;
-      slug = slug.replace('/item/','');
-      getDataAsync(`/api/item/${slug}`).then( (response) => {
-        setItem(response.data)
-      })
-    }, [ location ]
+      if ( update ) {
+        let slug = location.pathname;
+        slug = slug.replace('/item/','');
+        getDataAsync(`/api/item/${slug}`).then( (response) => {
+          setItem(response.data);
+          setUpdate(false);
+        })
+      }
+    }, [update]
   );
   
 
@@ -74,6 +119,7 @@ function Item({ location }) {
       <p>{ item.type.category }</p>
       <p>{ item.type.system }</p>
       <Listings data={item.locations} />
+      <ListingAdd update={setUpdate} slug={ item.slug } />
     </main>
   );
 }

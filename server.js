@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 const DB_PATH = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
 
 // Establish the database connection:
-mongoose.connect(DB_PATH, { useNewUrlParser: true, useCreateIndex: true });
+mongoose.connect(DB_PATH, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false });
 
 let db = mongoose.connection;
 db.once('open', () => console.log(`Connected to the database`));

@@ -15,8 +15,11 @@ let itemSchema = new mongoose.Schema({
   locations: [
     {
       slug: String,
-      date: Date,
-      price: Number
+      date: {
+        type: Date,
+        default: Date.now
+      },
+      price: mongoose.Decimal128
     }
   ]
 });
