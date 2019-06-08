@@ -30,28 +30,31 @@ function ItemsList( { data } ) {
   )
 };
 
-function LocationsList( { data } ) {
+function Listings({ update, slug, data }) {
+
+  let onListingDelete = (e) => {
+
+    let request = {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ _id: e.currentTarget.dataset.id })
+    };
+
+    sendDataAsync(`/api/listing/${slug}`, request)
+      .then( (response) => {
+        if ( response.success ){
+          update(true);
+        }
+      });
+  }
 
   return (
     <ul>
-      {
-        data.map( item => {
-          return (
-            <li>
-              { item.title }
-            </li>
-          )
-        })
-      }
-    </ul>
-  )
-}
-
-function Listings({ data }) {
-  return (
-    <ul>
-    { data.map((listing) => {
-      return <li>{ listing.price.$numberDecimal } - <Link to={`/location/${listing.slug}`}>{ listing.slug }</Link> at { listing.date }</li>
+    { data.map((listing, index) => {
+      return <li key={`listing${index}`}>{ listing.price.$numberDecimal } - <Link to={`/location/${listing.slug}`}>{ listing.slug }</Link> at { listing.date } - <button onClick={onListingDelete} data-slug={listing.slug} data-id={listing._id}>Delete</button></li>
     })}
     </ul>
   )
@@ -59,10 +62,11 @@ function Listings({ data }) {
 
 function ListingAdd( { update, slug } ) {
 
-  const [listing, setListing] = useState({ slug: "Location", price: "0.00" });
+  const DEFAULT_LISTING = { slug: '', title: "Location", price: '0.00' };
+  const [listing, setListing] = useState(DEFAULT_LISTING);
 
   let onPriceUpdate = e => setListing({...listing, price: e.currentTarget.value});
-  let onSlugUpdate = e => setListing({...listing, slug: e.currentTarget.value });
+  let onSlugUpdate = (locationSlug, locationTitle) => setListing({...listing, slug: locationSlug, title: locationTitle });
 
   let handleAddListing = (e) => {
 
@@ -81,14 +85,73 @@ function ListingAdd( { update, slug } ) {
           update(true);
         }
       });
+
+    setListing(DEFAULT_LISTING);
   };
 
   return (
     <aside>
-      <input type="text" placeholder="price" onChange={onPriceUpdate} value={listing.price} />
-      <input type="text" placeholder="location" onChange={onSlugUpdate} value={listing.slug} />
-      <button onClick={handleAddListing}>Add Listing</button>
+      Price $<input type="text" placeholder="price" onChange={onPriceUpdate} value={listing.price} /> at <span>{ listing.title }</span>
+      <p>
+        <button onClick={handleAddListing} disabled={ listing.slug === '' ? true : false }>Add Listing</button>
+      </p>
+
+      <hr />
+      <LocationSearch updateSlug={onSlugUpdate} />
     </aside>
+  )
+}
+
+function LocationSearch({ updateSlug } ){
+
+  const [query, setQuery] = useState('');
+  const [locations, setLocations] = useState([]);
+  const [results, setResults] = useState([]);
+
+  useEffect(
+    () => {
+      getDataAsync(`/api/locations`).then( (response) => {
+        setLocations(response.data);
+      })
+    }, []
+  );
+
+  useEffect(
+    () => {
+
+      if ( query !== "" ){
+
+        let newResults = locations.filter( (item) => {
+          return item.title.toLowerCase().includes(query)
+        });
+        setResults(newResults);
+      } else {
+        setResults([]);
+      }
+      
+    }, [query, locations]
+  )
+  let handleSearch = e => setQuery(e.currentTarget.value.toLowerCase());
+  let handleChange = e => setQuery(e.currentTarget.value);
+  let onResultClick = (e) => {
+    
+    updateSlug(e.currentTarget.dataset.slug, e.currentTarget.dataset.title);
+    setResults([]);
+    setQuery('');
+  }
+
+  return (
+    <div>
+      <h3>Search for Location</h3>
+      <input type="text" placeholder="location" onKeyUp={handleSearch} onChange={handleChange} value={query} />
+      <ul>
+        {
+          results.map( (result, index) => {
+            return <li key={`result${index}`}><button onClick={onResultClick} data-slug={result.slug} data-title={result.title}>{ result.title }</button></li>
+          })
+        }
+      </ul>
+    </div>
   )
 }
 
@@ -109,7 +172,7 @@ function Item({ location }) {
           setUpdate(false);
         })
       }
-    }, [update]
+    }, [update, location]
   );
   
 
@@ -118,7 +181,7 @@ function Item({ location }) {
       <h3>{ item.title }</h3>
       <p>{ item.type.category }</p>
       <p>{ item.type.system }</p>
-      <Listings data={item.locations} />
+      <Listings update={setUpdate} slug={item.slug} data={item.locations} />
       <ListingAdd update={setUpdate} slug={ item.slug } />
     </main>
   );

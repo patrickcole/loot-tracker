@@ -52,6 +52,16 @@ router.post('/listing/:slug', (req, res) => {
   Item.findOneAndUpdate(query, update, ( err, data ) => {
     APIResponse(res, err, data, 'Item not updated')
   });
-})
+});
+
+router.delete('/listing/:slug', (req, res) => {
+
+  let query = { slug: req.params.slug };
+  let update = { '$pull': { 'locations': req.body } };
+
+  Item.findOneAndUpdate(query, update, (err, data) => {
+    APIResponse(res, err, data, 'Listing not removed');
+  })
+});
 
 module.exports = router;
