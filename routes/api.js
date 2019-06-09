@@ -52,6 +52,14 @@ router.get('/item/:slug', (req, res) => {
   Item.findOne( { slug: req.params.slug }, ( err, data ) => {
     APIResponse(res, err, data, 'Item not found')
   });
+});
+
+router.put('/item/:slug', (req, res) => {
+
+  let query = { slug: req.params.slug };
+  Item.findOneAndUpdate(query, req.body, ( err, data ) => {
+    APIResponse(res, err, data, 'Item not updated', 'Item was updated');
+  })
 })
 
 router.post('/listing/:slug', (req, res) => {

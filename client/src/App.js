@@ -157,8 +157,12 @@ function LocationSearch({ updateSlug } ){
 
 function Item({ location, add }) {
 
-  let default_item = { slug: "", title: "", type: { category: "", system: "" }, locations: [] }
+  // Strip out the path info
+  // TODO: Clean this up
+  let page_slug = location.pathname;
+  page_slug = page_slug.replace('/item/', '');
 
+  let default_item = { slug: "", title: "", type: { category: "", system: "" }, locations: [] }
   let [item, setItem] = useState(default_item);
   let [update, setUpdate] = useState(true);
   let [message, setMessage] = useState('');
@@ -166,14 +170,12 @@ function Item({ location, add }) {
   useEffect(
     () => {
       if ( !add && update ) {
-        let slug = location.pathname;
-        slug = slug.replace('/item/','');
-        getDataAsync(`/api/item/${slug}`).then( (response) => {
+        getDataAsync(`/api/item/${page_slug}`).then( (response) => {
           setItem(response.data);
           setUpdate(false);
         })
       }
-    }, [update, location, add]
+    }, [update, page_slug, add]
   );
   
   let onItemPropertyUpdate = e => {
@@ -184,21 +186,29 @@ function Item({ location, add }) {
   };
 
   let onItemSubmit = e => {
+
+    let command, routePath;
     if ( add ) {
-      let request = {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(item)
-      };
-  
-      sendDataAsync(`/api/items`, request)
-        .then( (response) => {
-          setMessage(response.message)
-        });
+      command = 'POST';
+      routePath = `/api/items`;
+    } else {
+      command = 'PUT';
+      routePath = `/api/item/${item.slug}`;
     }
+
+    let request = {
+      method: command,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item)
+    };
+
+    sendDataAsync(routePath, request)
+      .then( (response) => {
+        setMessage(response.message)
+      });
   }
 
   let renderEditor = () => {
@@ -221,7 +231,7 @@ function Item({ location, add }) {
   return (
     <main>
       <p>{ message }</p>
-      <EditableText field="slug" value={item.slug} onUpdate={onItemPropertyUpdate} />
+      <p>{ item.slug }</p>
       <EditableText field="title" value={item.title} onUpdate={onItemPropertyUpdate} />
       { renderEditor() }
     </main>
