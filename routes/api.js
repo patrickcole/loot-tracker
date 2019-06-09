@@ -22,8 +22,8 @@ router.post('/locations', (req, res) => {
   let location = new Location(req.body);
   location
     .save()
-    .then( item => res.json({ success: true , data: { message: 'Location saved' }}) )
-    .catch( err => res.json({ success: false, data: { error: err }}) );
+    .then( item => res.json({ success: true , message: 'Location saved' }))
+    .catch( err => res.json({ success: false, message: err }));
 });
 
 router.get('/location/:slug', (req, res) => {
@@ -36,6 +36,16 @@ router.get('/items', (req, res) => {
   Item.find( (err, data) => {
     APIResponse(res, err, data, 'Items not found');
   })
+});
+
+router.post('/items', (req, res) => {
+
+  // TODO: Santize data:
+  let item = new Item(req.body);
+  item
+    .save()
+    .then( item => res.json({ success: true, message: 'Item Added' }))
+    .catch( err => res.json({ success: false, message: err }));
 });
 
 router.get('/item/:slug', (req, res) => {

@@ -155,16 +155,17 @@ function LocationSearch({ updateSlug } ){
   )
 }
 
-function Item({ location }) {
+function Item({ location, add }) {
 
-  let default_item = { title: "", type: { category: "", system: "" }, locations: [] }
+  let default_item = { slug: "", title: "", type: { category: "", system: "" }, locations: [] }
 
   let [item, setItem] = useState(default_item);
   let [update, setUpdate] = useState(true);
+  let [message, setMessage] = useState('');
 
   useEffect(
     () => {
-      if ( update ) {
+      if ( !add && update ) {
         let slug = location.pathname;
         slug = slug.replace('/item/','');
         getDataAsync(`/api/item/${slug}`).then( (response) => {
@@ -172,19 +173,69 @@ function Item({ location }) {
           setUpdate(false);
         })
       }
-    }, [update, location]
+    }, [update, location, add]
   );
   
+  let onItemPropertyUpdate = e => {
+
+    let currentObject = item;
+    currentObject[e.currentTarget.dataset.field] = e.currentTarget.value;
+    setItem(currentObject);
+  };
+
+  let onItemSubmit = e => {
+    if ( add ) {
+      let request = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+      };
+  
+      sendDataAsync(`/api/items`, request)
+        .then( (response) => {
+          setMessage(response.message)
+        });
+    }
+  }
+
+  let renderEditor = () => {
+    if ( !add ) {
+      return (
+        <>
+        <button onClick={onItemSubmit}>Edit</button>
+        <div style={{float: 'right'}}>
+          <h3>Listings</h3>
+          <Listings update={setUpdate} slug={item.slug} data={item.locations} />
+          <ListingAdd update={setUpdate} slug={ item.slug } />
+        </div>
+        </>
+      )
+    } else {
+      return <button onClick={onItemSubmit}>Add</button>
+    }
+  }
 
   return (
     <main>
-      <h3>{ item.title }</h3>
-      <p>{ item.type.category }</p>
-      <p>{ item.type.system }</p>
-      <Listings update={setUpdate} slug={item.slug} data={item.locations} />
-      <ListingAdd update={setUpdate} slug={ item.slug } />
+      <p>{ message }</p>
+      <EditableText field="slug" value={item.slug} onUpdate={onItemPropertyUpdate} />
+      <EditableText field="title" value={item.title} onUpdate={onItemPropertyUpdate} />
+      { renderEditor() }
     </main>
   );
+}
+
+function EditableText( {field, value, onUpdate} ) {
+  return (
+    <p>
+      <label>
+        {field}: <input type="text" data-field={field} onChange={onUpdate} defaultValue={value} />
+      </label>
+    </p>
+  )
 }
 
 function Location( { location } ) {
@@ -223,6 +274,7 @@ function Main() {
     <main>
       <h2>Items</h2>
       <ItemsList data={items} />
+      <p><Link to="/add/item">Add Item</Link></p>
     </main>
   )
 }
@@ -231,10 +283,11 @@ function App() {
 
   return (
     <Router>
-      <h1>Loot Tracker</h1>
+      <h1><Link to="/">Loot Tracker</Link></h1>
       <hr />
       <Route path="/" exact render={ props => <Main { ...props } /> } />
-      <Route path="/item/:slug" exact render={ props => <Item {...props} /> } />
+      <Route path="/add/item" exact render={ props => <Item {...props} add={true} /> } />
+      <Route path="/item/:slug" exact render={ props => <Item {...props} add={false} /> } />
       <Route path="/location/:slug" exact render={ props => <Location {...props} /> } />
     </Router>
   );
