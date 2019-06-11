@@ -40,6 +40,18 @@ a:link, a:visited, a:hover, a:active {
   cursor: not-allowed;
 }
 
+.btn__control {
+  font-size: 1rem;
+  background-color: #ffffff;
+  border-color: #ffffff;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 100%;
+  padding: 0;
+  line-height: 0;
+  color: #000000;
+}
+
 .title {
   margin: 0 0 1rem 0;
 }
@@ -97,15 +109,18 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .list__listings {
-  margin: 1rem 0;
-  background-color: #dddddd;
+  margin: 0 0 1rem 0;
+  background-color: #E23E4D;
   padding: 0 1rem;
+  color: #ffffff;
   border-radius: 10px;
 }
 
   .list-item__listing {
+    display: flex;
+    justify-content: space-between;
     padding: 1rem 0;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #ffffff;
   }
 
   .list-item__listing:last-child {
@@ -121,7 +136,11 @@ a:link, a:visited, a:hover, a:active {
 
   .list-item__field {
     display: flex;
-    
+    border-bottom: 1px solid #ccc;
+  }
+
+  .list-item__field:last-child {
+    border-bottom-width: 0;
   }
 
 .control__label {
@@ -131,8 +150,13 @@ a:link, a:visited, a:hover, a:active {
   
 }
 
-.control__input {
+.control__cell {
   flex: 1 1 75%;
+  margin: 0.5rem;
+}
+
+.control__input {
+  width: 100%;
   font-size: 1rem;
   padding: 0.5rem;
 }

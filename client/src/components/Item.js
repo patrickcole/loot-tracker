@@ -41,7 +41,11 @@ function Item({ location }) {
         <h1 className="collection__title">{item.title}</h1>
         <Link to={`/edit/item/${item.slug}`}>Edit</Link>
       </div>
-      <Listings slug={item.slug} data={item.listings} edit={false} />
+      <ul className="list list__fields">
+        <li className="list-item__field">
+          <Listings slug={item.slug} data={item.listings} edit={false} />
+        </li>
+      </ul>
     </main>
   );
 }

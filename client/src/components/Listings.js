@@ -22,7 +22,7 @@ function Listings({ slug, data, triggerEntityModification, edit }) {
 
   let includeDeleteListing = (listing) => {
     if ( edit ) {
-      return (<button className="btn" onClick={onListingDelete} data-id={listing._id}>Delete</button>)
+      return (<button className="btn btn__control" onClick={onListingDelete} data-id={listing._id}>&times;</button>)
     }
   };
 
@@ -33,22 +33,25 @@ function Listings({ slug, data, triggerEntityModification, edit }) {
   };
 
   return (
-    <div>
-      <h3 className="title">Listings</h3>
-      <ul className="list list__listings">
-      {
-        data.map( (entity, index) => {
-          return (
-            <li className="list-item list-item__listing" key={`listing${index}`}>
-              ${ entity.price.$numberDecimal } &bull; <Link to={`/location/${entity.slug}`}>{ entity.slug }</Link> - { new Date(entity.date).toDateString() }
-                { includeDeleteListing(entity) }
-            </li>
-          )
-        })
-      }
-      </ul>
-      { includeAddListing() }
-    </div>
+    <>
+      <span className="control__label">Listings</span>
+      <div className="control__cell">
+        <ul className="list list__listings">
+        {
+          data.map( (entity, index) => {
+            return (
+              <li className="list-item list-item__listing" key={`listing${index}`}>
+                <span>${ entity.price.$numberDecimal } &bull; <Link to={`/location/${entity.slug}`}>{ entity.slug }</Link> - { new Date(entity.date).toDateString() }</span>
+                  { includeDeleteListing(entity) }
+              </li>
+            )
+          })
+        }
+        </ul>
+        { includeAddListing() }
+      </div>
+      
+    </>
   )
 }
 

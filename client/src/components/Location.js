@@ -15,10 +15,16 @@ function Location( { location } ) {
   );
 
   return (
-    <main>
-      <h1>{place.title}</h1>
-      <Link to={`/edit/location/${place.slug}`}>Edit</Link>
-      <p>{place.coordinates}</p>
+    <main className="page">
+      <div className="collection__header">
+        <h1 className="collection__title">{place.title}</h1>
+        <Link to={`/edit/location/${place.slug}`}>Edit</Link>
+      </div>
+      <ul className="list list__fields">
+        <li className="list-item__field">
+          {place.coordinates}
+        </li>
+      </ul>
     </main>
   )
 }
