@@ -12,13 +12,25 @@ function Item({ location }) {
 
   useEffect(() => {
     asyncFetch(`/api/item/${routeName}`)
-      .then( (response) => setItem(response.data));
+      .then( (response) => {
+        
+        // TODO: Make a utility function:
+        let itemData = response.data;
+        let newListings = itemData.listings;
+        newListings = newListings.sort( (a,b) => {
+          return a.price.$numberDecimal - b.price.$numberDecimal;
+        });
+
+        setItem({...itemData, listings: newListings});
+      });
     }, [routeName]
   );
 
+  
+
   return (
     <main>
-      <h3>{ item.title }</h3>
+      <h1>{ item.title }</h1>
       <Link to={`/edit/item/${item.slug}`}>Edit</Link>
       <Listings slug={item.slug} data={item.listings} edit={false} />
     </main>

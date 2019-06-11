@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { BrowserRouter as Route, Link } from 'react-router-dom';
 import { asyncFetch } from '../utils/Network';
 import EditableText from './EditableText';
 import Listings from './Listings';
@@ -14,26 +15,43 @@ function EntityEditor( { location } ) {
   const [update, setUpdate] = useState(false);
   const [message, setMessage] = useState('');
 
+  let configureEntity = (data) => {
+    // TODO: Make a utility function:
+    if ( data.listings ){
+
+      let newListings = data.listings;
+      newListings = newListings.sort( (a,b) => {
+        return a.price.$numberDecimal - b.price.$numberDecimal;
+      });
+
+      data = {...data, listings: newListings};
+    }
+    setEntity(data);
+  }
+
   useEffect(() => {
     asyncFetch(editor.api)
       .then( (response) => {
-        setEntity(response.data);
+        configureEntity(response.data);
         setReady(true);
       });
     }, [editor.api]
   );
 
+  /*
   useEffect(() => {
       if ( update ){
         asyncFetch(editor.api)
         .then( (response) => {
-          setEntity( response.data );
+          configureEntity(response.data);
           setUpdate(false);
         })
       }
     }, [editor.api, update]
   );
+  */
 
+  let onEntityModification = (data) => setEntity(data);
   let updateIsReady = (bool) => setUpdate(bool);
   let onEntityPropertyUpdate = e => setEntity({...entity, [e.currentTarget.dataset.field]: e.currentTarget.value});
   let onEntitySave = e => {
@@ -53,7 +71,7 @@ function EntityEditor( { location } ) {
     if ( ready ){
       if ( editor.entity === 'item' ){
         return (
-          <Listings slug={entity.slug} data={entity.listings} updateIsReady={updateIsReady} edit={true} />
+          <Listings slug={entity.slug} data={entity.listings} updateIsReady={updateIsReady} triggerEntityModification={onEntityModification} edit={true} />
         )
       }
     }
@@ -61,7 +79,7 @@ function EntityEditor( { location } ) {
 
   return (
     <main>
-      <h1>EntityEditor</h1>
+      <h1><Link to={`/${editor.entity}/${entity.slug}`}>{entity.title}</Link></h1>
       {displayMessage()}
       <pre>{entity.slug}</pre>
       <EditableText field="title" value={entity.title} onUpdate={onEntityPropertyUpdate} />

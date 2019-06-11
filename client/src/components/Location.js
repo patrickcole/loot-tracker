@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Route, Link } from 'react-router-dom';
 import { asyncFetch, getRouteName } from '../utils/Network';
 
 function Location( { location } ) {
@@ -15,7 +16,8 @@ function Location( { location } ) {
 
   return (
     <main>
-      <h3>{place.title}</h3>
+      <h1>{place.title}</h1>
+      <Link to={`/edit/location/${place.slug}`}>Edit</Link>
       <p>{place.coordinates}</p>
     </main>
   )

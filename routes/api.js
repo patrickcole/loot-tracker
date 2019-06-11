@@ -30,6 +30,14 @@ router.get('/location/:slug', (req, res) => {
   Location.findOne( { slug: req.params.slug }, ( err, data ) => {
     APIResponse(res, err, data, 'Location not found');
   });
+});
+
+router.put('/location/:slug', (req, res) => {
+
+  let query = { slug: req.params.slug };
+  Location.findOneAndUpdate(query, req.body, { new: true }, ( err, data ) => {
+    APIResponse(res, err, data, 'Location not updated', 'Location was updated');
+  })
 })
 
 router.get('/items', (req, res) => {
@@ -57,7 +65,7 @@ router.get('/item/:slug', (req, res) => {
 router.put('/item/:slug', (req, res) => {
 
   let query = { slug: req.params.slug };
-  Item.findOneAndUpdate(query, req.body, ( err, data ) => {
+  Item.findOneAndUpdate(query, req.body, { new: true }, ( err, data ) => {
     APIResponse(res, err, data, 'Item not updated', 'Item was updated');
   })
 })
@@ -67,7 +75,7 @@ router.post('/listing/:slug', (req, res) => {
   let query = { slug: req.params.slug };
   let update = { '$push': { 'listings': req.body } };
 
-  Item.findOneAndUpdate(query, update, ( err, data ) => {
+  Item.findOneAndUpdate(query, update, { new: true }, ( err, data ) => {
     APIResponse(res, err, data, 'Item not updated')
   });
 });
@@ -77,7 +85,7 @@ router.delete('/listing/:slug', (req, res) => {
   let query = { slug: req.params.slug };
   let update = { '$pull': { 'listings': req.body } };
 
-  Item.findOneAndUpdate(query, update, (err, data) => {
+  Item.findOneAndUpdate(query, update, { new: true }, (err, data) => {
     APIResponse(res, err, data, 'Listing not removed');
   })
 });

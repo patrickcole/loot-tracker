@@ -3,7 +3,7 @@ import { BrowserRouter as Link } from 'react-router-dom';
 import {asyncFetch} from '../utils/Network';
 import ListingAdd from './ListingAdd';
 
-function Listings({ slug, data, updateIsReady, edit }) {
+function Listings({ slug, data, triggerEntityModification, edit }) {
 
   let onListingDelete = (e) => {
 
@@ -15,7 +15,7 @@ function Listings({ slug, data, updateIsReady, edit }) {
     asyncFetch(`/api/listing/${slug}`, request)
       .then( (response) => {
         if ( response.success ){
-          updateIsReady(true);
+          triggerEntityModification(response.data);
         }
       });
   }
@@ -28,7 +28,7 @@ function Listings({ slug, data, updateIsReady, edit }) {
 
   let includeAddListing = () => {
     if ( edit ) {
-      return <ListingAdd onComplete={updateIsReady} slug={ slug } />;
+      return <ListingAdd onComplete={triggerEntityModification} slug={ slug } />;
     }
   };
 

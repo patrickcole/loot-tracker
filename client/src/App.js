@@ -52,7 +52,7 @@ function App() {
 
   return (
     <Router>
-      <h1><Link to="/">Loot Tracker</Link></h1>
+      <p><Link to="/">Loot Tracker</Link></p>
       <hr />
       <Route path="/" exact render={ props => <Main { ...props } /> } />
       

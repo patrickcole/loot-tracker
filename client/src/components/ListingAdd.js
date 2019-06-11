@@ -72,7 +72,7 @@ function ListingAdd( { onComplete, slug } ) {
     asyncFetch(`/api/listing/${slug}`, request)
       .then( (response) => {
         if ( response.success ){
-          onComplete(true);
+          onComplete(response.data);
           setListing(DEFAULT_LISTING);
         }
       });
