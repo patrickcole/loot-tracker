@@ -8,11 +8,7 @@ let itemSchema = new mongoose.Schema({
     dropDups: true
   },
   title: String,
-  type: {
-    category: String,
-    system: String
-  },
-  locations: [
+  listings: [
     {
       slug: String,
       date: {

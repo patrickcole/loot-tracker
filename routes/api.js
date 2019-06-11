@@ -65,7 +65,7 @@ router.put('/item/:slug', (req, res) => {
 router.post('/listing/:slug', (req, res) => {
 
   let query = { slug: req.params.slug };
-  let update = { '$push': { 'locations': req.body } };
+  let update = { '$push': { 'listings': req.body } };
 
   Item.findOneAndUpdate(query, update, ( err, data ) => {
     APIResponse(res, err, data, 'Item not updated')
@@ -75,7 +75,7 @@ router.post('/listing/:slug', (req, res) => {
 router.delete('/listing/:slug', (req, res) => {
 
   let query = { slug: req.params.slug };
-  let update = { '$pull': { 'locations': req.body } };
+  let update = { '$pull': { 'listings': req.body } };
 
   Item.findOneAndUpdate(query, update, (err, data) => {
     APIResponse(res, err, data, 'Listing not removed');
