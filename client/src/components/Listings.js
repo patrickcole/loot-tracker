@@ -22,7 +22,7 @@ function Listings({ slug, data, triggerEntityModification, edit }) {
 
   let includeDeleteListing = (listing) => {
     if ( edit ) {
-      return (<li><button onClick={onListingDelete} data-id={listing._id}>Delete</button></li>)
+      return (<button className="btn" onClick={onListingDelete} data-id={listing._id}>Delete</button>)
     }
   };
 
@@ -34,19 +34,14 @@ function Listings({ slug, data, triggerEntityModification, edit }) {
 
   return (
     <div>
-      <h3>Listings</h3>
-      <ul>
+      <h3 className="title">Listings</h3>
+      <ul className="list list__listings">
       {
         data.map( (entity, index) => {
           return (
-            <li key={`listing${index}`}>
-              <ul>
-                <li>{ entity.date }</li>
-                <li>{ entity.price.$numberDecimal }</li>
-                <li><Link to={`/location/${entity.slug}`}>{ entity.slug }</Link></li>
+            <li className="list-item list-item__listing" key={`listing${index}`}>
+              ${ entity.price.$numberDecimal } &bull; <Link to={`/location/${entity.slug}`}>{ entity.slug }</Link> - { new Date(entity.date).toDateString() }
                 { includeDeleteListing(entity) }
-              </ul>
-              <hr />
             </li>
           )
         })

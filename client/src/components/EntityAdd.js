@@ -26,12 +26,14 @@ function EntityAdd( { location } ) {
   }
 
   return (
-    <main>
+    <main className="page">
       <h1>EntityAdd</h1>
       {displayMessage()}
-      <EditableText field="slug" value={entity.slug} onUpdate={onEntityPropertyUpdate} />
-      <EditableText field="title" value={entity.title} onUpdate={onEntityPropertyUpdate} />
-      <button onClick={onEntityAdd}>Add</button>
+      <div className="widget">
+        <EditableText field="slug" value={entity.slug} onUpdate={onEntityPropertyUpdate} />
+        <EditableText field="title" value={entity.title} onUpdate={onEntityPropertyUpdate} />
+        <button className="btn" onClick={onEntityAdd}>Add</button>
+      </div>
     </main>
   )
 }

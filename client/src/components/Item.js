@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Route, Link } from 'react-router-dom';
 import {asyncFetch, getRouteName} from '../utils/Network';
 
+import { Image, CloudinaryContext } from 'cloudinary-react';
+
 import Listings from './Listings';
 
 function Item({ location }) {
@@ -29,9 +31,16 @@ function Item({ location }) {
   
 
   return (
-    <main>
-      <h1>{ item.title }</h1>
-      <Link to={`/edit/item/${item.slug}`}>Edit</Link>
+    <main className="page">
+      <div className="entity">
+        <CloudinaryContext className="entity__cover" cloudName="dc0f4a05j">
+          <Image className="cloudinary__image" publicId={`loot-tracker/${item.slug}`} />
+        </CloudinaryContext>
+      </div>
+      <div className="collection__header">
+        <h1 className="collection__title">{item.title}</h1>
+        <Link to={`/edit/item/${item.slug}`}>Edit</Link>
+      </div>
       <Listings slug={item.slug} data={item.listings} edit={false} />
     </main>
   );

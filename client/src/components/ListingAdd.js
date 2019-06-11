@@ -41,16 +41,16 @@ function LocationSearch({ updateListingLocation } ){
   };
 
   return (
-    <>
+    <div className="search__location">
       <input type="text" placeholder="location" onKeyUp={handleSearch} onChange={handleSearch} value={query} />
       <ul>
         {
           results.map( (result, index) => {
-            return <li key={`result${index}`}>{ result.title } - <button data-slug={result.slug} data-title={result.title} onClick={onResultApply}>Select</button></li>
+            return <li key={`result${index}`}>{ result.title } - <button className="btn" data-slug={result.slug} data-title={result.title} onClick={onResultApply}>Select</button></li>
           })
         }
       </ul>
-    </>
+    </div>
   )
 }
 
@@ -80,17 +80,15 @@ function ListingAdd( { onComplete, slug } ) {
 
   return (
     <aside>
-      <h3>Add Listing</h3>
-      <p>
+      <h4 className="title">Add Listing</h4>
+      <div>
         <label>Price
           $<input type="text" placeholder="price" onChange={onPriceUpdate} value={listing.price} />
         </label>
         at
         <LocationSearch updateListingLocation={onSlugUpdate} />
-      </p>
-      <p>
-        <button onClick={handleAddListing} disabled={ listing.slug === '' ? true : false }>Add Listing</button>
-      </p>
+        <button className="btn" onClick={handleAddListing} disabled={ listing.slug === '' ? true : false }>Add Listing</button>
+      </div>
     </aside>
   )
 }

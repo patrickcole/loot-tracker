@@ -78,13 +78,17 @@ function EntityEditor( { location } ) {
   }
 
   return (
-    <main>
-      <h1><Link to={`/${editor.entity}/${entity.slug}`}>{entity.title}</Link></h1>
+
+    <main className="page">
+
       {displayMessage()}
-      <pre>{entity.slug}</pre>
-      <EditableText field="title" value={entity.title} onUpdate={onEntityPropertyUpdate} />
+      
+      <h1 className="title"><Link to={`/${editor.entity}/${entity.slug}`}>{entity.title}</Link></h1>
+      <ul className="list list__fields">
+        <li className="list-item__field"><EditableText field="title" label="Title" value={entity.title} onUpdate={onEntityPropertyUpdate} /></li>
+      </ul>
       { renderEntityLogic() }
-      <button onClick={onEntitySave}>Save</button>
+      <button className="btn" onClick={onEntitySave}>Save</button>
     </main>
   )
 }

@@ -2470,6 +2470,19 @@ clone-deep@^2.0.1:
     kind-of "^6.0.0"
     shallow-clone "^1.0.0"
 
+cloudinary-core@^2.6.2:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/cloudinary-core/-/cloudinary-core-2.6.3.tgz#6a5c773a8c48cbf5686dfcdd577445ab8efe8d85"
+  integrity sha512-0oEUn1eTuJzLxNdm0OsnAadGN6nMFOVqq+n7dgy6VBP8pGwc5TLkZ8MAHvik03Cv7+JH0tykwkSvYzM7rWY43g==
+
+cloudinary-react@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/cloudinary-react/-/cloudinary-react-1.1.1.tgz#95197c8a77d98a200805294ceb82e95c2dfa3792"
+  integrity sha512-iMr98xU/rLsTsveX2iwaO8bNRc+yjYz7sFwaknRHzlmxXhUTHP1lC5nKkDax5LecId0LS44NqyWC+TuZepPJig==
+  dependencies:
+    cloudinary-core "^2.6.2"
+    prop-types "^15.6.2"
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -7846,7 +7859,7 @@ react-dev-utils@^9.0.1:
     strip-ansi "5.2.0"
     text-table "0.2.0"
 
-react-dom@16.8.6:
+react-dom@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
   integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
@@ -7926,7 +7939,7 @@ react-scripts@3.0.1:
   optionalDependencies:
     fsevents "2.0.6"
 
-react@16.8.6:
+react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
   integrity sha512-pC0uMkhLaHm11ZSJULfOBqV4tIZkx87ZLvbbQYunNixAAvjnC+snJCg0XQXn9VIsttVsbZP/H/ewzgsd5fxKXw==
