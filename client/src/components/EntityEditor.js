@@ -29,6 +29,11 @@ function EntityEditor( { location } ) {
       itemData = {...itemData, products: newListings} 
     }
 
+    if ( itemData.latlng ) {
+      
+      itemData = {...itemData, editorCoordinates: itemData.latlng.coordinates.toString() }
+    }
+
     setEntity(itemData);
   }
 
@@ -56,6 +61,19 @@ function EntityEditor( { location } ) {
   let onEntityPropertyUpdate = e => setEntity({...entity, [e.currentTarget.dataset.field]: e.currentTarget.value});
   let onEntitySave = e => {
     
+    // TODO: Make a utility function:
+    // if a location:
+    if ( editor.entity === 'location' ){
+
+      let coorRawValues = entity.editorCoordinates;
+      coorRawValues = coorRawValues.split(',');
+      let latLngCoors = coorRawValues.map( value => parseFloat(value) );
+
+      let newEntity = entity;
+      newEntity.latlng.coordinates = latLngCoors;
+      setEntity(newEntity);
+    }
+
     let request = { method: 'PUT', body: JSON.stringify(entity) };
     asyncFetch(editor.api, request)
       .then( (response ) => {
@@ -73,6 +91,7 @@ function EntityEditor( { location } ) {
       case "_id": return null;
       case "slug": return null;
       case "__v": return null;
+      case "latlng": return null;
       case "products":
         return (
           <li key="field_listings" className="list-item__field">
@@ -94,7 +113,7 @@ function EntityEditor( { location } ) {
 
       let render = [];
       for ( let prop in entity ){
-        
+
         let renderObj = renderField(entity, prop);
         if ( renderObj ){
           render.push( renderObj )
