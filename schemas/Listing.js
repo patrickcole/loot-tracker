@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 let listingSchema = new mongoose.Schema({
-  _id: mongoose.Schema.ObjectId,
   item: {
     type: String,
     required: true

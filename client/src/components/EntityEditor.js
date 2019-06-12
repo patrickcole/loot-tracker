@@ -13,6 +13,7 @@ function EntityEditor( { location } ) {
   const [entity, setEntity] = useState({});
   const [ready, setReady] = useState(false);
   const [message, setMessage] = useState('');
+  const [update, setUpdate] = useState(false);
 
   let configureEntity = (data) => {
 
@@ -40,6 +41,18 @@ function EntityEditor( { location } ) {
     }, [editor.api]
   );
 
+  useEffect(() => {
+      if ( update ){
+        asyncFetch(editor.api)
+        .then( (response) => {
+          configureEntity(response.data);
+        });
+        setUpdate(false);
+      }
+    }, [editor.api, update]
+  );
+
+  let onUpdateReady = e => setUpdate(true);
   let onEntityPropertyUpdate = e => setEntity({...entity, [e.currentTarget.dataset.field]: e.currentTarget.value});
   let onEntitySave = e => {
     
@@ -63,7 +76,7 @@ function EntityEditor( { location } ) {
       case "products":
         return (
           <li key="field_listings" className="list-item__field">
-            <Listings slug={entity.slug} data={entity.products} edit={true} editorEntity={editor.entity} />
+            <Listings slug={entity.slug} data={entity.products} edit={true} editorEntity={editor.entity} triggerDataUpdate={onUpdateReady} />
           </li>
         );
       default:
@@ -75,7 +88,7 @@ function EntityEditor( { location } ) {
         )
     }
   }
-  
+
   let renderEntityLogic = () => {
     if ( ready ){
 

@@ -54,7 +54,7 @@ function LocationSearch({ updateListingLocation } ){
   )
 }
 
-function ListingAdd( { slug } ) {
+function ListingAdd( { slug, onListingAdd } ) {
 
   const DEFAULT_LISTING = { item: slug, location: '', price: '' };
   const [listing, setListing] = useState(DEFAULT_LISTING);
@@ -72,6 +72,7 @@ function ListingAdd( { slug } ) {
     asyncFetch(`/api/listings`, request)
       .then( (response) => {
         if ( response.success ){
+          onListingAdd();
           setListing(DEFAULT_LISTING);
         }
       });
