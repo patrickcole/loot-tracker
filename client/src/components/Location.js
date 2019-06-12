@@ -21,8 +21,8 @@ function Location( { location } ) {
 
   let map = (
 
-    <Map center={[0,0]} zoom={30} width={600} height={400}>
-      <Marker anchor={[0,0]} />
+    <Map center={place.latlng.coordinates} zoom={15} width={480} height={320} metaWheelZoom={true}>
+      <Marker anchor={place.latlng.coordinates} payload={1} onClick={({ event, anchor, payload }) => {}} />
     </Map>
   );
 
