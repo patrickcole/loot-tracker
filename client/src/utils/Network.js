@@ -12,7 +12,7 @@ export const asyncFetch = async function(url, json) {
 }
 
 export const getRouteName = function(path) {
-  return path.match(/\/([^\/]+)\/?$/)[1];
+  return path.match(/\/([^/]+)\/?$/)[1];
 }
 
 const Network = () => {

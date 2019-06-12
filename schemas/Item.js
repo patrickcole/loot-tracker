@@ -7,17 +7,7 @@ let itemSchema = new mongoose.Schema({
     required: true,
     dropDups: true
   },
-  title: String,
-  listings: [
-    {
-      slug: String,
-      date: {
-        type: Date,
-        default: Date.now
-      },
-      price: mongoose.Decimal128
-    }
-  ]
+  title: String
 });
 
 module.exports = mongoose.model('Item', itemSchema);

@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {asyncFetch} from '../utils/Network';
 import ListingAdd from './ListingAdd';
 
-function Listings({ slug, data, triggerEntityModification, edit }) {
+function Listings({ slug, data, edit, editorEntity }) {
 
   let onListingDelete = (e) => {
 
@@ -12,10 +12,10 @@ function Listings({ slug, data, triggerEntityModification, edit }) {
       body: JSON.stringify({ _id: e.currentTarget.dataset.id })
     };
 
-    asyncFetch(`/api/listing/${slug}`, request)
+    asyncFetch(`/api/listings`, request)
       .then( (response) => {
         if ( response.success ){
-          triggerEntityModification(response.data);
+          console.log(response);
         }
       });
   }
@@ -27,8 +27,9 @@ function Listings({ slug, data, triggerEntityModification, edit }) {
   };
 
   let includeAddListing = () => {
-    if ( edit ) {
-      return <ListingAdd onComplete={triggerEntityModification} slug={ slug } />;
+
+    if ( edit && (editorEntity !== 'location') ) {
+      return <ListingAdd slug={ slug } />;
     }
   };
 
@@ -39,9 +40,10 @@ function Listings({ slug, data, triggerEntityModification, edit }) {
         <ul className="list list__listings">
         {
           data.map( (entity, index) => {
+
             return (
               <li className="list-item list-item__listing" key={`listing${index}`}>
-                <span>${ entity.price.$numberDecimal } &bull; <Link to={`/location/${entity.slug}`}>{ entity.slug }</Link> - { new Date(entity.date).toDateString() }</span>
+                <span>${ entity.price.$numberDecimal } &bull; <Link to={`/location/${entity.location}`}>{ entity.title }</Link> - { new Date(entity.date).toDateString() }</span>
                   { includeDeleteListing(entity) }
               </li>
             )

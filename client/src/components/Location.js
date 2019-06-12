@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { asyncFetch, getRouteName } from '../utils/Network';
 
 function Location( { location } ) {
 
   let routeName = getRouteName(location.pathname);
-  const [place, setPlace] = useState({ title: "", coordinates: "" });
+  const [place, setPlace] = useState({ title: "", coordinates: "", products: [] });
 
   useEffect(
     () => {
       asyncFetch(`/api/location/${routeName}`)
-        .then( (response) => setPlace(response.data));
+        .then( (response) => {
+          setPlace(response.data[0])
+        });
     }, [ routeName ]
   );
 
@@ -24,6 +26,15 @@ function Location( { location } ) {
         <li className="list-item__field">
           {place.coordinates}
         </li>
+      </ul>
+      <ul>
+      { 
+        place.products.map( (product, index) => {
+          return (
+            <li key={`item${index}`}><Link to={`/item/${product.item}`}>{product.title} - ${product.price.$numberDecimal}</Link></li>
+          )
+        })
+      }
       </ul>
     </main>
   )

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { BrowserRouter as Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { asyncFetch } from '../utils/Network';
 import EditableText from './EditableText';
 import Listings from './Listings';
@@ -12,28 +12,23 @@ function EntityEditor( { location } ) {
 
   const [entity, setEntity] = useState({});
   const [ready, setReady] = useState(false);
-  const [update, setUpdate] = useState(false);
   const [message, setMessage] = useState('');
 
-
-  const [dictionary, setDictionary] = useState({
-    title: "Title",
-    listings: "Listings",
-    coordinates: "Coordinates"
-  });
-
   let configureEntity = (data) => {
-    // TODO: Make a utility function:
-    if ( data.listings ){
 
-      let newListings = data.listings;
+    // TODO: Make a utility function:
+    let itemData = data[0];
+    if ( itemData.products ){
+      
+      let newListings = itemData.products;
       newListings = newListings.sort( (a,b) => {
         return a.price.$numberDecimal - b.price.$numberDecimal;
       });
 
-      data = {...data, listings: newListings};
+      itemData = {...itemData, products: newListings} 
     }
-    setEntity(data);
+
+    setEntity(itemData);
   }
 
   useEffect(() => {
@@ -45,21 +40,6 @@ function EntityEditor( { location } ) {
     }, [editor.api]
   );
 
-  /*
-  useEffect(() => {
-      if ( update ){
-        asyncFetch(editor.api)
-        .then( (response) => {
-          configureEntity(response.data);
-          setUpdate(false);
-        })
-      }
-    }, [editor.api, update]
-  );
-  */
-
-  let onEntityModification = (data) => setEntity(data);
-  let updateIsReady = (bool) => setUpdate(bool);
   let onEntityPropertyUpdate = e => setEntity({...entity, [e.currentTarget.dataset.field]: e.currentTarget.value});
   let onEntitySave = e => {
     
@@ -80,21 +60,22 @@ function EntityEditor( { location } ) {
       case "_id": return null;
       case "slug": return null;
       case "__v": return null;
-      case "listings":
+      case "products":
         return (
-          <li className="list-item__field">
-            <Listings slug={entity.slug} data={entity.listings} updateIsReady={updateIsReady} triggerEntityModification={onEntityModification} edit={true} />
+          <li key="field_listings" className="list-item__field">
+            <Listings slug={entity.slug} data={entity.products} edit={true} editorEntity={editor.entity} />
           </li>
         );
       default:
         return (
 
           <li key={`field${property}`} className="list-item__field">
-            <EditableText field={property} label={dictionary[property]} value={entity[property]} onUpdate={onEntityPropertyUpdate} />
+            <EditableText field={property} label={property} value={entity[property]} onUpdate={onEntityPropertyUpdate} />
           </li>
         )
     }
   }
+  
   let renderEntityLogic = () => {
     if ( ready ){
 

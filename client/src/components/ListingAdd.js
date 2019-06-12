@@ -37,7 +37,7 @@ function LocationSearch({ updateListingLocation } ){
     
     let title = e.currentTarget.dataset.title;
     setQuery(title);
-    updateListingLocation(e.currentTarget.dataset.slug, title);
+    updateListingLocation(e.currentTarget.dataset.slug);
   };
 
   return (
@@ -54,25 +54,24 @@ function LocationSearch({ updateListingLocation } ){
   )
 }
 
-function ListingAdd( { onComplete, slug } ) {
+function ListingAdd( { slug } ) {
 
-  const DEFAULT_LISTING = { slug: '', title: '', price: '' };
+  const DEFAULT_LISTING = { item: slug, location: '', price: '' };
   const [listing, setListing] = useState(DEFAULT_LISTING);
 
   let onPriceUpdate = e => setListing({...listing, price: e.currentTarget.value});
-  let onSlugUpdate = (locationSlug, locationTitle) => setListing({...listing, slug: locationSlug, title: locationTitle });
+  let onLocationUpdate = (locationSlug) => setListing({...listing, location: locationSlug });
 
   let handleAddListing = (e) => {
 
     let request = {
       method: 'POST',
-      body: JSON.stringify({ slug: listing.slug, price: listing.price })
+      body: JSON.stringify(listing)
     };
 
-    asyncFetch(`/api/listing/${slug}`, request)
+    asyncFetch(`/api/listings`, request)
       .then( (response) => {
         if ( response.success ){
-          onComplete(response.data);
           setListing(DEFAULT_LISTING);
         }
       });
@@ -86,7 +85,7 @@ function ListingAdd( { onComplete, slug } ) {
           $<input type="text" placeholder="price" onChange={onPriceUpdate} value={listing.price} />
         </label>
         at
-        <LocationSearch updateListingLocation={onSlugUpdate} />
+        <LocationSearch updateListingLocation={onLocationUpdate} />
         <button className="btn" onClick={handleAddListing} disabled={ listing.slug === '' ? true : false }>Add Listing</button>
       </div>
     </aside>
