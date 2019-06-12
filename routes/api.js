@@ -59,6 +59,7 @@ router.get('/location/:slug', (req, res) => {
         _id:"$_id",
         slug: {$first: "$slug"},
         title: {$first: "$title"},
+        latlng: {$first: "$latlng"},
         products: {
           $push: {
             $cond: [
@@ -85,6 +86,7 @@ router.get('/location/:slug', (req, res) => {
       $project : {
         slug: 1,
         title: 1,
+        latlng: 1,
         products : { $filter : { input : "$products", as : "item", cond : { $ne : ["$$item.location" , "default"] } } }
       }
     }

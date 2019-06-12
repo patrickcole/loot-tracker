@@ -1,7 +1,7 @@
 {
   "name": "node-loot-tracker",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "author": "Patrick Cole <hpcmobiledev@gmail.com>",
   "license": "MIT",
   "dependencies": {
@@ -13,6 +13,7 @@
     "react-router-dom": "^5.0.1"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && yarn && yarn run build"
   }
 }

@@ -8,7 +8,17 @@ let locationSchema = new mongoose.Schema({
     dropDups: true
   },
   title: String,
-  coordinates: String,
+  latlng: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
+  }
 });
 
 module.exports = mongoose.model('Location', locationSchema);

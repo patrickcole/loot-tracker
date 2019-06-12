@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "cloudinary-react": "^1.1.1",
+    "pigeon-maps": "^0.13.0",
+    "pigeon-marker": "^0.3.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"

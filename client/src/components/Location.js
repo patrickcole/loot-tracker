@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { asyncFetch, getRouteName } from '../utils/Network';
 
+import Map from 'pigeon-maps';
+import Marker from 'pigeon-marker';
+
 function Location( { location } ) {
 
   let routeName = getRouteName(location.pathname);
-  const [place, setPlace] = useState({ title: "", coordinates: "", products: [] });
+  const [place, setPlace] = useState({ title: "", latlng: {coordinates:[0,0]}, products: [] });
 
   useEffect(
     () => {
@@ -16,17 +19,20 @@ function Location( { location } ) {
     }, [ routeName ]
   );
 
+  let map = (
+
+    <Map center={[0,0]} zoom={30} width={600} height={400}>
+      <Marker anchor={[0,0]} />
+    </Map>
+  );
+
   return (
     <main className="page">
+      {map}
       <div className="collection__header">
         <h1 className="collection__title">{place.title}</h1>
         <Link to={`/edit/location/${place.slug}`}>Edit</Link>
       </div>
-      <ul className="list list__fields">
-        <li className="list-item__field">
-          {place.coordinates}
-        </li>
-      </ul>
       <ul>
       { 
         place.products.map( (product, index) => {
