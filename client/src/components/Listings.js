@@ -44,8 +44,8 @@ function Listings({ slug, data, edit, editorEntity, triggerDataUpdate }) {
             return (
               <li className="list-item list-item__listing" key={`listing${index}`}>
                 <span className="price">${ entity.price.$numberDecimal }</span>
-                <Link to={`/location/${entity.location}`}>{ entity.title }</Link>
-                <span>{ new Date(entity.date).toDateString() }</span>
+                <Link className="location" to={`/location/${entity.location}`}>{ entity.title }</Link>
+                <span className="date">{ new Date(entity.date).toDateString() }</span>
                 { includeDeleteListing(entity) }
               </li>
             )

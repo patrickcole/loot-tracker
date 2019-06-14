@@ -68,6 +68,16 @@ a:hover, a:active {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+.btn__edit {
+  display: block;
+  margin: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.btn__edit:link, .btn__edit:visited, .btn__edit:hover, .btn__edit:active {
+  color: #ffffff;
+}
+
 .btn:disabled {
   background-color: #999999;
   cursor: not-allowed;
@@ -106,20 +116,26 @@ a:hover, a:active {
   align-items: center;
 }
 
-.collection__title {
-  margin-bottom: 0.5rem;
-}
-
 .collection__item {
   flex: 1 1 auto;
 }
 
   @media all and (min-width: 640px) {
     .collection__item {
-      flex: 0 0 250px;
+      flex: 0 0 280px;
     }
   }
 
+.collection__location {
+  flex: 1 1 auto;
+}
+
+  @media all and (min-width: 640px) {
+    .collection__location {
+      flex: 0 0 400px;
+    }
+  }
+  
 .collection__content {
   flex: 1 1 auto;
 }
@@ -141,6 +157,7 @@ a:hover, a:active {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  margin-top: 1rem;
 }
 
 .list__collection .entity:hover {
@@ -165,6 +182,7 @@ a:hover, a:active {
   .list-item__listing {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     align-items: flex-start;
     padding: 1rem 0;
     border-bottom: 1px solid #cccccc;
@@ -242,14 +260,8 @@ a:hover, a:active {
   }
 
 .item__locations {
-  flex-basis: 100%;
+  flex-basis: auto;
 }
-
-  @media all and (min-width: 640px) {
-    .item__locations {
-      flex-basis: 320px;
-    }
-  }
 
 .entity {
   position: relative;
@@ -377,11 +389,34 @@ a:hover, a:active {
 }
 
 .price {
+  text-align: center;
   font-size: 0.9rem;
   padding: 0.5rem;
-  background-color: #111111;
+  margin: 0.5rem;
+  background-color: #E23E4D;
   color: #ffffff;
   border-radius: 10px;
-  margin-right: 0.5rem;
 }
 
+  @media all and (min-width: 640px) {
+    .price {
+      flex: 0 0 80px;
+    }
+  }
+
+.location {
+  flex: 1 1 auto;
+  margin: 0.5rem;
+}
+
+.date {
+  margin: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.map__container {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1rem 0.5rem;
+}

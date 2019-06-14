@@ -63,11 +63,11 @@ function Item({ location }) {
             { renderImage() }
           </div>
         </div>
+        <Link className="btn btn__edit" to={`/edit/item/${item.slug}`}>Edit</Link>
       </div>
       <div className="collection__content">
         <div className="collection__header">
           <h1 className="collection__title">{item.title}</h1>
-          <Link to={`/edit/item/${item.slug}`}>Edit</Link>
         </div>
         <ul className="list list__fields">
           <li className="list-item__field">
