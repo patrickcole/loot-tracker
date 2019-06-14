@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {asyncFetch} from '../utils/Network';
 import ListingAdd from './ListingAdd';
+import LocalText from './LocalText';
 
 function Listings({ slug, data, edit, editorEntity, triggerDataUpdate }) {
 
@@ -59,7 +60,7 @@ function Listings({ slug, data, edit, editorEntity, triggerDataUpdate }) {
 
   return (
     <>
-      <span className="control__label">Listings</span>
+      <span className="control__label"><LocalText term="listings" /></span>
       <div className="control__cell">
         { renderListings() }
         { includeAddListing() }

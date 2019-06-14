@@ -1,9 +1,30 @@
 import React, {useState} from 'react';
 import { asyncFetch, getRouteName } from '../utils/Network';
 import EditableText from './EditableText';
+import LocalText from './LocalText';
 
 function EntityAdd( { location } ) {
 
+  let schemas = {
+    item:
+      {
+        formatted: "item",
+        fields: {
+          slug: "slug",
+          title: "title"
+        }
+      },
+    location:
+      {
+        formatted: "location",
+        fields: {
+          slug: "slug",
+          title: "title",
+          editorCoordinates: "editorCoordinates"
+        }
+      }
+  };
+  
   let apiEntity = location.pathname;
   apiEntity = apiEntity.replace('/add/','/api/');
 
@@ -41,22 +62,22 @@ function EntityAdd( { location } ) {
     }
   }
 
-  let displayLocationSpecific = () => {
-    if ( routeName === "location" ){
-      return (
-        <li key={`field_latlng`} className="list-item__field"><EditableText field="editorCoordinates" label="coordinates" value={entity.editorCoordinates} onUpdate={onEntityPropertyUpdate} /></li>
-      )
+  let renderEntityFields = ( schema ) => {
+
+    let render = [];
+    for ( let prop in schema ) {
+      render.push(<li key={`field_${prop}`} className="list-item__field"><EditableText field={prop} label={schema[prop]} value={entity[prop]} onUpdate={onEntityPropertyUpdate} /></li>)
     }
+
+    return render;
   }
 
   return (
     <main className="page">
-      <h1>{routeName}</h1>
+      <h1><LocalText term={schemas[routeName].formatted} /></h1>
       {displayMessage()}
       <ul className="list list__fields">
-        <li key={`field_slug`} className="list-item__field"><EditableText field="slug" label="slug" value={entity.slug} onUpdate={onEntityPropertyUpdate} /></li>
-        <li key={`field_title`} className="list-item__field"><EditableText field="title" label="title" value={entity.title} onUpdate={onEntityPropertyUpdate} /></li>
-        { displayLocationSpecific() }
+        { renderEntityFields( schemas[routeName].fields ) }
       </ul>
       <button className="btn" onClick={onEntityAdd}>Add</button>
     </main>

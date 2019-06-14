@@ -8,6 +8,7 @@ import EntityEditor from './components/EntityEditor';
 
 import Item from './components/Item';
 import Location from './components/Location';
+import LocalText from './components/LocalText';
 
 import './App.css';
 
@@ -17,7 +18,7 @@ const cloudinary = require('cloudinary-core').Cloudinary.new({
   api_secret: 'ygoXvZ6-RWbwyNq1mOuYVhRxrY0'
 });
 
-function EntityList( { collection, entity, title } ) {
+function EntityList( { collection, entity } ) {
 
   const [entities, setEntities] = useState([{}]);
 
@@ -50,7 +51,7 @@ function EntityList( { collection, entity, title } ) {
   return (
     <div className="collection">
       <div className="collection__header">
-        <h2 className="collection__title">{title}s</h2>
+        <h2 className="collection__title"><LocalText term={collection} /></h2>
       </div>
       
       <ul className="list list__collection">
@@ -77,8 +78,8 @@ function Main() {
 
   return (
     <main className="page">
-      <EntityList collection="items" entity="item" title="Item" />
-      <EntityList collection="locations" entity="location" title="Location" />
+      <EntityList collection="items" entity="item" />
+      <EntityList collection="locations" entity="location" />
     </main>
   )
 }
