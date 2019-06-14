@@ -33,14 +33,21 @@ function Location( { location } ) {
         <h1 className="collection__title">{place.title}</h1>
         <Link to={`/edit/location/${place.slug}`}>Edit</Link>
       </div>
-      <ul>
-      { 
-        place.products.map( (product, index) => {
-          return (
-            <li key={`item${index}`}><Link to={`/item/${product.item}`}>{product.title} - ${product.price.$numberDecimal}</Link></li>
-          )
-        })
-      }
+      <ul className="list list__fields">
+        <li className="list-item__field">
+          <span className="control__label">Listings</span>
+          <div className="control__cell">
+            <ul className="list list__listings">
+            { 
+              place.products.map( (product, index) => {
+                return (
+                  <li className="list-item list-item__listing" key={`item${index}`}><Link to={`/item/${product.item}`}><span className="price">${product.price.$numberDecimal}</span>{product.title}</Link></li>
+                )
+              })
+            }
+            </ul>
+          </div>
+        </li>
       </ul>
     </main>
   )

@@ -33,23 +33,35 @@ function Listings({ slug, data, edit, editorEntity, triggerDataUpdate }) {
     }
   };
 
-  return (
-    <>
-      <span className="control__label">Listings</span>
-      <div className="control__cell">
+  let renderListings = () => {
+    if ( data.length > 0 ) {
+      return (
         <ul className="list list__listings">
         {
           data.map( (entity, index) => {
 
             return (
               <li className="list-item list-item__listing" key={`listing${index}`}>
-                <span>${ entity.price.$numberDecimal } &bull; <Link to={`/location/${entity.location}`}>{ entity.title }</Link> - { new Date(entity.date).toDateString() }</span>
-                  { includeDeleteListing(entity) }
+                <span className="price">${ entity.price.$numberDecimal }</span>
+                <Link to={`/location/${entity.location}`}>{ entity.title }</Link>
+                <span>{ new Date(entity.date).toDateString() }</span>
+                { includeDeleteListing(entity) }
               </li>
             )
           })
         }
         </ul>
+      )
+    } else {
+      return <p>No listings available</p>
+    }
+  }
+
+  return (
+    <>
+      <span className="control__label">Listings</span>
+      <div className="control__cell">
+        { renderListings() }
         { includeAddListing() }
       </div>
       

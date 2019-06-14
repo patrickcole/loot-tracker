@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { Image, CloudinaryContext } from 'cloudinary-react';
 
 import {asyncFetch} from './utils/Network';
 
@@ -11,6 +10,12 @@ import Item from './components/Item';
 import Location from './components/Location';
 
 import './App.css';
+
+const cloudinary = require('cloudinary-core').Cloudinary.new({
+  cloud_name: 'dc0f4a05j',
+  api_key: '294845966527839',
+  api_secret: 'ygoXvZ6-RWbwyNq1mOuYVhRxrY0'
+});
 
 function EntityList( { collection, entity, title } ) {
 
@@ -26,10 +31,18 @@ function EntityList( { collection, entity, title } ) {
   let hasImageToRender = (item) => {
 
     if ( item && entity === 'item' ){
+
+      let backgroundStyles = {
+        backgroundImage: 'url(' + cloudinary.url('loot-tracker/' + item.slug) + ')'
+      };
+
       return (
-        <CloudinaryContext className="entity__cover" cloudName="dc0f4a05j">
-          <Image publicId={`loot-tracker/${item.slug}`} />
-        </CloudinaryContext>
+        <>
+        <span className="entity__cover">
+          <img src={cloudinary.url(`loot-tracker/${item.slug}`)} alt={`${item.slug}`} />
+        </span>
+        <span className="entity__blur" style={backgroundStyles}></span>
+        </>
       )
     }
   }
@@ -38,17 +51,17 @@ function EntityList( { collection, entity, title } ) {
     <div className="collection">
       <div className="collection__header">
         <h2 className="collection__title">{title}s</h2>
-        <Link to={`/add/${entity}`}>Add {title}</Link>
       </div>
       
       <ul className="list list__collection">
         {
           entities.map( (item, index) => {
+
             return (
-              <li className="entity" key={`${item}-${index}`}>
-                <Link to={`/${entity}/${item.slug}`}>
-                { hasImageToRender(item) }
-                <span className="entity__subtitle">{ item.title }</span>
+              <li className={`item item__${collection}`} key={`${item}-${index}`}>
+                <Link className="entity" to={`/${entity}/${item.slug}`}>
+                  { hasImageToRender(item) }
+                  <span className="entity__subtitle">{ item.title }</span>
                 </Link>
               </li>
             )
@@ -75,7 +88,9 @@ function App() {
   return (
     <Router>
       <header className="masthead">
-        <Link to="/">Loot Tracker</Link>
+        <Link className="masthead__item masthead__brand" to="/">Loot Tracker</Link>
+        <Link className="masthead__item" to={`/add/item`}>+ Item</Link>
+        <Link className="masthead__item" to={`/add/location`}>+ Location</Link>
       </header>
 
       <Route path="/" exact render={ props => <Main { ...props } /> } />

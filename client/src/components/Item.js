@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {asyncFetch, getRouteName} from '../utils/Network';
 
-import { Image, CloudinaryContext } from 'cloudinary-react';
-
 import Listings from './Listings';
+
+const cloudinary = require('cloudinary-core').Cloudinary.new({
+  cloud_name: 'dc0f4a05j',
+  api_key: '294845966527839',
+  api_secret: 'ygoXvZ6-RWbwyNq1mOuYVhRxrY0'
+});
 
 function Item({ location }) {
 
@@ -35,31 +39,44 @@ function Item({ location }) {
 
   let renderImage = () => {
     if ( item.slug !== "" ) {
+      let backgroundStyles = {
+        backgroundImage: 'url(' + cloudinary.url('loot-tracker/' + item.slug) + ')'
+      };
+
       return (
-        <CloudinaryContext className="entity__cover" cloudName="dc0f4a05j">
-          <Image className="cloudinary__image" publicId={`loot-tracker/${item.slug}`} />
-        </CloudinaryContext>
+        <>
+        <span className="entity__cover">
+          <img src={cloudinary.url(`loot-tracker/${item.slug}`)} alt={`${item.slug}`} />
+        </span>
+        <span className="entity__blur" style={backgroundStyles}></span>
+        </>
       )
     }
   }
   
 
   return (
-    <main className="page">
-      <div className="entity">
-        { renderImage() }
+    <main className="page page__collection">
+      <div className="collection__item">
+        <div className="item">
+          <div className="entity">
+            { renderImage() }
+          </div>
+        </div>
       </div>
-      <div className="collection__header">
-        <h1 className="collection__title">{item.title}</h1>
-        <Link to={`/edit/item/${item.slug}`}>Edit</Link>
+      <div className="collection__content">
+        <div className="collection__header">
+          <h1 className="collection__title">{item.title}</h1>
+          <Link to={`/edit/item/${item.slug}`}>Edit</Link>
+        </div>
+        <ul className="list list__fields">
+          <li className="list-item__field">
+            { 
+            <Listings slug={item.slug} data={item.products} edit={false} />
+            }
+          </li>
+        </ul>
       </div>
-      <ul className="list list__fields">
-        <li className="list-item__field">
-          { 
-          <Listings slug={item.slug} data={item.products} edit={false} />
-          }
-        </li>
-      </ul>
     </main>
   );
 }

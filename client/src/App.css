@@ -15,22 +15,55 @@ a:link, a:visited, a:hover, a:active {
   text-decoration: none;
 }
 
+a:hover, a:active {
+  text-decoration: underline;
+}
+
 .masthead {
   padding: 1rem;
   line-height: 2rem;
   background-color: #E23E4D;
   color: rgb(255,255,255);
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 5;
+  box-shadow: 0 5px 7px rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+.masthead__item {
+  margin: 0 0.5rem;
+}
+
+.masthead__brand {
+  flex: 1 1 auto;
+  margin-left: 0;
 }
 
 .page {
-  padding: 1rem;
+  padding: 4.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
 }
+
+  .page.page__collection {
+    flex-direction: column;
+  }
+
+  @media all and (min-width: 640px) {
+    .page.page__collection {
+      flex-direction: row;
+    }
+  }
 
 .btn {
   cursor: pointer;
   padding: 0.5rem 1rem;
   background-color: #111111;
   border: 1px solid #111111;
+  border-radius: 5px;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -65,7 +98,7 @@ a:link, a:visited, a:hover, a:active {
 
 .collection {
 
-  padding: 1rem;
+  padding: 1rem 0;
 }
 
 .collection__header {
@@ -74,7 +107,27 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .collection__title {
-  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.collection__item {
+  flex: 1 1 auto;
+}
+
+  @media all and (min-width: 640px) {
+    .collection__item {
+      flex: 0 0 250px;
+    }
+  }
+
+.collection__content {
+  flex: 1 1 auto;
+}
+
+@media all and (min-width: 640px) {
+  .collection__content {
+    padding: 1rem;
+  }
 }
 
 
@@ -87,15 +140,11 @@ a:link, a:visited, a:hover, a:active {
 .list__collection {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-}
-
-.list__collection .entity {
-  flex: 0 0 250px;
+  justify-content: space-evenly;
 }
 
 .list__collection .entity:hover {
-  box-shadow: 0 3px 3px rgba(0,0,0,0.4);
+  box-shadow: 0 5px 7px rgba(0,0,0,0.5);
 }
 
 .list__collection .entity a {
@@ -109,19 +158,25 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .list__listings {
-  margin: 0 0 1rem 0;
-  background-color: #E23E4D;
   padding: 0 1rem;
-  color: #ffffff;
   border-radius: 10px;
 }
 
   .list-item__listing {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
     padding: 1rem 0;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid #cccccc;
   }
+
+    @media all and (min-width: 640px) {
+      .list-item__listing {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
 
   .list-item__listing:last-child {
     border-bottom-width: 0;
@@ -136,21 +191,28 @@ a:link, a:visited, a:hover, a:active {
 
   .list-item__field {
     display: flex;
+    flex-direction: column;
     border-bottom: 1px solid #ccc;
   }
+
+    @media all and (min-width: 640px) {
+      .list-item__field {
+        flex-direction: row;
+      }
+    }
 
   .list-item__field:last-child {
     border-bottom-width: 0;
   }
 
 .control__label {
-  background-color: #cccccc;
   flex: 1 1 25%;
   padding: 1rem;
-  
+  background-color: #dddddd;
 }
 
 .control__cell {
+  background-color: #ffffff;
   flex: 1 1 75%;
   margin: 0.5rem;
 }
@@ -161,44 +223,165 @@ a:link, a:visited, a:hover, a:active {
   padding: 0.5rem;
 }
 
+.item {
+  flex: 1 0 200px;
+  margin: 0.5rem;
+  display: flex;
+}
+
+  @media all and (min-width: 640px) {
+    .item {
+      flex: 1 0 250px;
+    }
+  }
+
+  @media all and (min-width: 1280px) {
+    .item {
+      flex: 1 0 300px;
+    }
+  }
+
+.item__locations {
+  flex-basis: 100%;
+}
+
+  @media all and (min-width: 640px) {
+    .item__locations {
+      flex-basis: 320px;
+    }
+  }
+
 .entity {
-  margin: 1rem;
+  position: relative;
+  flex: 1 1 auto;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
-  background-color: rgb(255,255,255);
+  background-color: #000000;
   box-shadow: 0 3px 7px rgba(0,0,0,0.2);
   overflow: hidden;
+  max-height: 250px;
+}
+
+.entity:hover, .entity:active {
+  text-decoration: none;
 }
 
 .entity__subtitle {
   padding: 0.5rem;
   text-align: center;
-  font-size: 0.80rem;
+  font-size: 0.9rem;
+  background-color: #E23E4D;
+  color: #ffffff;
+  z-index: 1;
 }
 
 .entity__cover {
+  position: relative;
   display: block;
   overflow: hidden;
-  max-height: 256px;
   background-color: #000000;
+  height: 100%;
   margin: 0;
-  padding: 0;
+  padding: 2px;
 }
 
-.list__collection .entity__cover {
-  line-height: 0;
-  min-height: 128px;
-}
+  .entity__blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    content: '';
+    filter: blur(20px);
+    background-size: cover;
+    background-position: center center;
+  }
 
-.list__collection .entity__cover img {
-  min-height: 128px;
-}
 
 .entity__cover img {
+  position: relative;
   object-fit: contain;
   width: 100%;
-  max-height: 256px;
+  height: 100%;
+  z-index: 1;
 }
 
-.search__location {
-  display: inline-block;
+.listingAdd {
+  position: relative;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  padding: 1rem;
 }
+
+.listingAdd__controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+
+
+.listingAdd__search {
+  flex: 1 1 auto;
+  border-top: 1px solid #cccccc;
+  padding-top: 0.5rem;
+  width: 100%;
+  display: flex;
+  margin-bottom: -0.5rem;
+}
+
+.listingAdd__input {
+  flex: 1 1 auto;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  font-size: 0.8rem;
+}
+
+.listingAdd__price {
+  flex: 0 0 240px;
+  display: flex;
+  align-items: center;
+}
+
+.listingAdd__location {
+  text-align: left;
+  flex: 1 0 auto;
+  margin: 0 0.5rem;
+}
+
+.listingAdd__results {
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+.listingAdd__result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #cccccc;
+  padding: 0.5rem 0;
+}
+
+.listingAdd__hidden {
+  display: none;
+}
+
+.result__title {
+  flex: 1 1 auto;
+}
+
+.price {
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  background-color: #111111;
+  color: #ffffff;
+  border-radius: 10px;
+  margin-right: 0.5rem;
+}
+
