@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { asyncFetch } from '../utils/Network';
 import EditableText from './EditableText';
 import Listings from './Listings';
-import LocalText from './LocalText';
 
 function EntityEditor( { location } ) {
 

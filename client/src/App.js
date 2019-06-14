@@ -14,8 +14,8 @@ import './App.css';
 
 const cloudinary = require('cloudinary-core').Cloudinary.new({
   cloud_name: 'dc0f4a05j',
-  api_key: '294845966527839',
-  api_secret: 'ygoXvZ6-RWbwyNq1mOuYVhRxrY0'
+  api_key: '687833166592887',
+  api_secret: 'RgYa8r5_XMxOURBOaT__Uz_skR8'
 });
 
 function EntityList( { collection, entity } ) {
