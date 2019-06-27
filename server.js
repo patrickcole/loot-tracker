@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const cors = require('cors');
 
 // If environment is development, configure environment variables:
@@ -19,6 +20,7 @@ app.use(cors());
 // Apply middleware for body params:
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(helmet());
 
 // Setup Mongoose:
 const DB_PATH = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
